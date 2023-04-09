@@ -1,0 +1,37 @@
+directive @isAuthenticated on FIELD_DEFINITION
+directive @hasRole(roles: [String]) on FIELD_DEFINITION
+directive @rateLimit(
+  max: Int
+  window: String
+  message: String
+  identityArgs: [String]
+  arrayLengthField: String
+) on FIELD_DEFINITION
+
+type UserQueue {
+    id: ID!
+    name: String!
+    waiting: Boolean!
+    minutes: Int!
+    token: String!
+    channelName: String!
+}
+
+type Query {
+  getUserQueue: [UserQueue!]!
+}
+
+type Response {
+  message: String!
+}
+
+type Mutation {
+    addUserQueue(name:String!,waiting:Boolean!,minutes:Int!): UserQueue!
+    removeUserQueue(id:ID!): Response!
+    joinUserQueue(id:ID!): UserQueue!
+    setUserQueue(id:ID!,waiting:Boolean!): UserQueue!
+}
+
+type Subscription {
+    getUserWaitingUserQueue(id:String!):[UserQueue!]!
+}
